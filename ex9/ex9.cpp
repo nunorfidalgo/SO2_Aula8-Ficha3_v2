@@ -8,6 +8,7 @@
 //DWORD WINAPI ThreadPrincipal(LPVOID param);
 DWORD WINAPI ThreadAuxiliar(LPVOID param);
 
+DWORD instante;
 bool terminar;
 
 int _tmain(int argc, LPTSTR argv[]) {
@@ -47,7 +48,7 @@ int _tmain(int argc, LPTSTR argv[]) {
 	}
 
 	// mais código
-	intervalo = _ttoi(argv[2]);
+	intervalo = _ttoi(argv[1]);
 
 	hTimer = CreateWaitableTimer(NULL, FALSE, NULL);
 
@@ -69,7 +70,7 @@ int _tmain(int argc, LPTSTR argv[]) {
 		_tprintf(TEXT("Lancei uma thread com id %d\n"), threadId);
 
 		WaitForSingleObject(hTimer, INFINITE);
-
+		_tprintf(TEXT("[Thread%d] Despertei, tempo que dormi: %ld\n"), GetCurrentThreadId(), GetTickCount() - instante);
 		terminar = TRUE;
 	}
 	else {
@@ -89,15 +90,13 @@ DWORD WINAPI ThreadAuxiliar(LPVOID param) {
 
 	_tprintf(TEXT("[Consumidor]Sou a thread %d e vou começar a trabalhar ...\n"), GetCurrentThreadId());
 
-	DWORD instante;
+	/*DWORD instante;*/
 
 	while (!terminar) {
 		instante = GetTickCount();
 		//Esperar o intervalo tempo
-
-		_tprintf(TEXT("[Thread%d] Despertei, tempo que dormi: %ld\n", GetCurrentThreadId(), GetTickCount() - instante);
-
 		terminar = FALSE;
+		/*_tprintf(TEXT("[Thread%d] Despertei, tempo que dormi: %ld\n"), GetCurrentThreadId(), GetTickCount() - instante);*/
 		return 0;
 	}
 
@@ -141,5 +140,7 @@ DWORD WINAPI ThreadAuxiliar(LPVOID param) {
 	//
 	//li.HighPart = ftUTC.dwHighDateTime;
 	//li.LowPart = ftUTC.dwLowDateTime;
+
+}
 
 
